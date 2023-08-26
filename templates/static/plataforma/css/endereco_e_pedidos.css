@@ -1,0 +1,25 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  thead th {
+    background-color: #ddd;
+    text-align: left;
+    padding: 10px;
+  }
+  
+  tbody td {
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+  
+  img {
+    width: 50px;
+    height: 50px;
+  }
+
+li {
+    list-style: none;
+}
+  

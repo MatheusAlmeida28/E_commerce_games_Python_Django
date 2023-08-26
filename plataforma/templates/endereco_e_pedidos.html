@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'head' %}
+
+<link rel="stylesheet" href="{% static 'usuarios/css/endereco_e_pedidos.css' %}">
+{% endblock %}
+
+{% block 'conteudo' %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-6">
+      <h1>Pedidos</h1>
+        {% for pedido in pedidos %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th colspan="2">Pedido feito em {{ pedido.data_pedido }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Endereço de entrega</td>
+                    <td>{{ pedido.endereco_entrega }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2">Jogo(s) comprado(s):</td>
+                </tr>
+                {% for game in pedido.games.all %}
+                    <tr>
+                    <td><img src="{{game.foto.url}}" ></td>
+                    <td>
+                        <ul class="list-unstyled">
+                        <p>Jogo</p>
+                        <li>{{ game.nome }}</li>
+                        <br>
+                        <p>Preço</p>
+                        <li>R$ {{game.preco}}</li>
+                        </ul>
+                    </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        <br>
+        <br>
+        {% endfor %}
+    </div>
+</div>
+</div>
+{% endblock  %}  

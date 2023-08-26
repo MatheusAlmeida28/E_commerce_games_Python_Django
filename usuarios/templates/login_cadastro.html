@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+
+{% block 'titulo' %}Supera Games Tecnológia{% endblock %}
+
+
+{% block 'conteudo' %}
+
+
+{% if messages %}
+    {% for i in messages %}
+        <div class="alert {{i.tags}}" role="alert">{{i}}</div>
+    {% endfor %}
+{% endif %}
+
+
+<div class="container">
+    <br>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h3>Login</h3>
+          </div>
+          <div class="card-body">
+            <form method="POST" action="{% url 'valida_login' %}">{% csrf_token %}
+              <h5>Já sou cadastrado</h5>
+              <br>
+              <img src="/media/site/mario.png" alt="">
+              <br>
+              <br>
+              <div class="form-group">
+                <label>Email:</label>
+                <input required name="email" class="form-control" type="text" placeholder="Email...">
+              </div>
+              <div class="form-group">
+                <label>Senha:</label>
+                <input required name="senha" class="form-control" type="password" placeholder="Senha...">
+              </div>
+              <input class="btn btn-success btn-block" type="submit" value="Logar">
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h3>Cadastre-se</h3>
+          </div>
+          <div class="card-body">
+            <form method="POST" action="{% url 'cadastro' %}">{% csrf_token %}
+              <h5>Ainda não possuo cadastro</h5>
+              <br>
+              <img src="/media/site/small-mario.jpg" alt="">
+              <br>
+              <br>
+              <h6>Primeiro acesso?</h6>
+              <br>
+              <p>Faça aqui o seu cadastro</p>
+              <br>
+              <br>
+              <br>
+              <br>
+              <input class="btn btn-success btn-block" type="submit" value="Faça seu cadastro aqui">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>  
+    
+{% endblock %}

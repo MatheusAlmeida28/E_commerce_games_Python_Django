@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'head' %} 
+
+<link rel="stylesheet" href="{% static 'plataforma/css/checkout.css' %}">
+
+{% endblock %}
+
+{% block 'conteudo' %}
+
+    {% if games_carrinho %}
+    <br>
+    <form method="POST" action="{% url 'processar_checkout' %}">{% csrf_token %}
+        <table>
+            <thead>
+            <tr>
+                <th>Game</th>
+                <th>Nome</th>
+                <th>Preço</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in games_carrinho %}
+            <tr>
+                <td><img src="{{item.games.foto.url}}"></td>
+                <td>{{item.games.nome}}</td>
+                <td>R$ {{item.games.preco}}</td>
+                <td><a href="{% url 'remover_item_carrinho_checkout' item.games.id %}"> <button type="button" id="excluir_game" class="btn btn-danger btn-sm">Excluir do Carrinho</button></a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <table>
+            <tfoot>
+                <tr>
+                    <td colspan="2"></td>
+                    <td><strong>Total: R$ {{soma}}</strong></td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td>
+                        {% if frete == 0 %}
+                            <strong>+ Frete Grátis</strong>
+                        {% else %}  
+                            <strong>+ Frete: R$ {{frete}}</strong>
+                        {% endif %}   
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td><strong>= R$ {{preco_final}} </strong></td>
+                </tr>
+            </tfoot>
+        </table>
+        <br>
+        <table>
+            <tr>
+            <td>Endereço:</td>
+            <td>{{ user.endereco }}</td>
+            </tr>
+            <tr>
+            <td>Número:</td>
+            <td>{{ user.numero_casa }}</td>
+            </tr>
+            <tr>
+            <td>Estado:</td>
+            <td>{{ user.get_estado_display }}</td>
+            </tr>
+            <tr>
+            <td>Cidade:</td>
+            <td>{{ user.cidade }}</td>
+            </tr>
+            <tr>
+            <td>Bairro:</td>
+            <td>{{ user.bairro }}</td>
+            </tr>
+        </table>      
+        {% endif %}
+        <br>
+        <button type="submit" class="btn btn-primary">Finalizar compra</button>
+    </form>
+{% endblock %}

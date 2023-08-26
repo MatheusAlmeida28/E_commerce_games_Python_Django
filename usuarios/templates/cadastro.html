@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block 'titulo' %}Supera Games Tecnológia{% endblock %}
+
+{% block 'head' %} 
+
+<link rel="stylesheet" href="{% static 'usuarios/css/cadastro.css' %}"> 
+
+{% endblock %}
+
+{% block 'conteudo' %}
+
+{% if messages %}
+    {% for i in messages %}
+        <div class="alert {{i.tags}}" role="alert">{{i}}</div>
+    {% endfor %}
+{% endif %}
+
+<br>
+<br>
+
+
+
+<form method="POST" action="{% url 'valida_cadastro' %}">{% csrf_token %}
+    <h1>Informações Cadastrais</h1>
+    <br>
+
+    <div class="form-row">
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label>Email</label>
+            <input type="text" class="form-control" required name="email">
+          </div>
+          <div class="form-group col-6">
+            <label>Confirmar e-mail</label>
+            <input type="text" class="form-control" required name="confirmaremail">
+          </div>
+        </div>
+    
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label>Senha</label>
+            <input type="password" class="form-control" required name="senha">
+          </div>
+          <div class="form-group col-6">
+            <label>Confirmar Senha</label>
+            <input type="password" class="form-control" required name="confirmarsenha">
+          </div>
+        </div>
+
+        <div class="form-group col-5">
+          <label>Nome Completo</label>
+          <input type="text" class="form-control" maxlength="150" required name="nome_completo">
+        </div>
+        <div class="form-group col-6">
+          <label>CPF</label>
+          <input type="text" class="form-control" maxlength="11" required name="cpf" id="cpf-input">
+        </div>
+
+
+      <div class="form-row">
+        <div class="form-group col-6">
+          <label>CEP</label>
+          <input type="text" class="form-control" maxlength="8"  required name="cep">
+        </div>
+        
+        <div class="form-group col-6">
+          <label>Número de Telefone</label>
+          <input type="text" class="form-control" maxlength="13" required name="telefone" id="telefone-input">
+        </div>
+        
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-6">
+          <label>Endereço</label>
+          <input type="text" class="form-control"  required name="endereco">
+        </div>
+        <div class="form-group col-6">
+          <label>Número</label>
+          <input type="text" class="form-control" maxlength="4" required name="numero_casa">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-6">
+          <label>Cidade</label>
+          <input type="text" class="form-control" required name="cidade">
+        </div>
+        <div class="form-group col-6">
+          <label>Bairro</label>
+          <input type="text" class="form-control" required name="bairro">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-6">
+            <label>Estado</label>
+            <select class="form-control" id="estado" name="estado">
+                {% for estados in estados_br %}
+                    <option value={{ estados.0 }}>{{ estados.1 }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group col-6">
+            <br>
+            <input class="btn btn-success btn-block" type="submit" value="Enviar">
+        </div>
+    </div>
+</form>
+
+
+<script>
+  const cpfInput = document.getElementById("cpf-input");
+  cpfInput.addEventListener("input", function() {
+    let cpf = this.value;
+    cpf = cpf.replace(/\D/g, ""); // remove todos os caracteres não-numéricos
+    cpf = cpf.slice(0, 11); // limite o tamanho a 11 dígitos
+    cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"); // adicione os pontos e hífen na formatação correta
+    this.value = cpf;
+  }); 
+
+const telefoneInput = document.getElementById("telefone-input");
+  telefoneInput.addEventListener("input", function() {
+    let telefone = this.value;
+    telefone = telefone.replace(/\D/g, ""); // remove todos os caracteres não-numéricos
+    telefone = telefone.slice(0, 11); // limite o tamanho a 10 dígitos
+    telefone = telefone.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3"); // adicione os parênteses e hífen na formatação correta
+    this.value = telefone; 
+  });
+</script>
+
+
+
+
+{% endblock %}

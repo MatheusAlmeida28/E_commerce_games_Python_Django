@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'titulo' %}Supera Games Tecnológia{% endblock %}
+
+{% block 'head' %} 
+
+<link rel="stylesheet" href="{% static 'usuarios/css/base.css' %}">
+<link rel="stylesheet" href="{% static 'plataforma/css/home.css' %}">
+
+{% endblock %}
+
+{% block 'barra_navegacao' %}
+
+<form action="#">
+  <label for="order" style="color: white;">Ordenar por:</label>
+  <select id="order" name="order_by">
+    <option value="preco">Preço</option>
+    <option value="popularidade">Popularidade</option>
+    <option value="alfabetica">Ordem Alfabética</option>
+  </select>
+  <input type="submit" value="Pesquisar">
+</form>  
+
+{% endblock %}
+
+
+{% block 'carrinho' %}
+  {% if user.is_authenticated %}
+          {% if no_carrinho %}
+            <h1>{{ no_carrinho|length }}</h1> <button class="botao" data-toggle="modal" data-target="#exampleModalCenter"> <img src="/media/site/cart-icon.svg">   </button>
+          {% else %}
+            <h1>0</h1> <button class="botao" data-toggle="modal" data-target="#exampleModalCenter"> <img src="/media/site/cart-icon.svg">
+            </button>
+          {% endif %}
+        
+        {% endif %}
+        
+        <div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            
+            <div class="modal-content">
+              <h1 class="text-center">Seu carrinho</h1>
+        
+              <div class="row">
+                {% for itens in games_carrinho %}
+                <div class="col-4">
+                  <img id="foto_carrinho" src="{{itens.games.foto.url}}">
+                  <br>
+                  {{itens.games.nome}}
+                  <br>
+                  R$:{{itens.games.preco}}
+                  <a href="{% url 'remover_do_carrinho' itens.games.id %}"> <button type="button" id="excluir_game" class="btn btn-danger btn-sm">Excluir do Carrinho</button></a>
+                </div>
+                {% endfor %}
+              </div>
+        
+              {% if no_carrinho|length %}  
+              <h2 class="text-center mt-4">Seu preço total</h2>
+              <div class="row">
+                <div class="col-12">
+                  R$ {{soma}}
+                  {% if frete == 0 %}
+                    + Frete Grátis
+                  {% else %}  
+                    + Frete: R${{frete}}
+                  {% endif %}   
+                        =
+                  R$ {{preco_final}}
+                </div>
+              </div>
+        
+              <div class="row mt-4">
+                <div class="col-12 text-center">
+                  <a href="{% url 'checkout' %}"> <button type="button" class="btn btn-info btn-sm">Ir para Checkout</button></a>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>         
+{% endblock %}
+
+{% block 'conteudo' %}
+
+{% if messages %}
+    {% for i in messages %}
+        <div class="alert {{i.tags}}" role="alert">{{i}}</div>
+    {% endfor %}
+{% endif %}
+
+<br>
+
+<div class="card-container">
+    {% for game in games %}
+      <div class="card" style="width: 18rem; display: inline-block;">
+        <img class="card-img-top" src="{{game.foto.url}}" alt="Card image cap">
+        <div class="card-body">
+          <p class="card-text">{{game.nome}}.</p>
+          <p class="card-text">R${{game.preco}}.</p>
+          <p class="card-text">Game score &nbsp(Metacritic) {{game.game_score}}pts.</p>
+          <form action="{% url 'adicionar_ao_carrinho' game.id %}">
+            <input class="btn btn-success btn-block" type="submit" value="Adicionar ao Carrinho">
+          </form>
+        </div>
+      </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
